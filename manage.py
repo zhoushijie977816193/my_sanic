@@ -3,10 +3,12 @@
 # author zhoushijie 2019.11.25
 
 
-from sanic import Sanic
+from sanic import Sanic, Blueprint
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
+from sanic_openapi import swagger_blueprint
+
 
 from config.mysqlconfig import MySqlConfig
 
@@ -26,3 +28,19 @@ session = DBSession()
 
 # applicaption
 app = Sanic()
+
+# blueprint test
+test_blueprint = Blueprint("test")
+app.blueprint(test_blueprint)
+
+# blueprinr book
+book_blueprint = Blueprint("book")
+app.blueprint(book_blueprint)
+
+# app openapi
+app.blueprint(swagger_blueprint)
+app.config["API_TITLE"] = "Sanic-OpenAPI"
+app.config["API_DESCRIPTION"] = "ZhouShiJie-Sanic-OpenAPI"
+app.config["API_SCHEMES"] = ["http", "https"]
+app.config["API_VERSION"] = "1.0.0"
+app.config["API_BASEPATH"] = "/test"

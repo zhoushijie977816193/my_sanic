@@ -4,7 +4,7 @@
 
 
 from manage import app
-from routes import book
+from routes import book, test
 
 
 if __name__ == "__main__":

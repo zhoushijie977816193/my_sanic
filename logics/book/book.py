@@ -4,28 +4,35 @@
 
 
 from sanic.response import json
+from sanic_openapi import doc
 
 from manage import session
 from models.book import BookBookModels
 
 
 async def hello_view(request, source, version):
-    res = {"source": source, "version": version}
-    res["test"] = "this is test api"
+    user_ip = request.ip if request.ip else "127.0.0.1"
+    other_para = {"source": source, "version": version, "ip": user_ip}
+    res = {"test": "this is test api"}
+    res = {**res, **other_para}
     return json(res)
 
 
 async def bookinfo_view(request, source, version, book_id):
-    print(request.args)
+    user_ip = request.ip if request.ip else "127.0.0.1"
+    other_para = {"source": source, "version": version, "ip": user_ip}
     item = session.query(BookBookModels).filter_by(id=book_id).first()
     res = item.to_json()
+    res = {**res, **other_para}
     return json(res)
 
 
+@doc.consumes({"post parameters": {"book_id": int, "chapter_id": int}}, location="body")
 async def bookinfo_post_view(request, source, version):
-    print(request.json)
+    user_ip = request.ip if request.ip else "127.0.0.1"
+    other_para = {"source": source, "version": version, "ip": user_ip}
     book_id = request.json["book_id"]
-    print(source, version)
     item = session.query(BookBookModels).filter_by(id=book_id).first()
     res = item.to_json()
+    res = {**res, **other_para}
     return json(res)

@@ -1,2 +1,2 @@
 # my_sanic
-test sanic
+使用sanic搭建的api服务端
